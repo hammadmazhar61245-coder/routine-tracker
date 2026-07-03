@@ -16,9 +16,9 @@ export function BarChart({
   return (
     <svg width="100%" viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
       <defs>
-        <linearGradient id="barGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%" stopColor="hsl(258 60% 58%)" />
-          <stop offset="100%" stopColor="hsl(280 70% 70%)" />
+       <linearGradient id="barGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stopColor="hsl(243 75% 62%)" />
+          <stop offset="100%" stopColor="hsl(200 85% 60%)" />
         </linearGradient>
       </defs>
       {data.map((d, i) => {

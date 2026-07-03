@@ -2,10 +2,11 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { AmbientBackground } from "@/components/AmbientBackground";
 
 export const metadata: Metadata = {
   title: "PlanFlow — Daily Planner",
-  description: "A warm, premium daily planner with reminders, stats, and photos.",
+  description: "A cool, modern daily planner with reminders, stats, and photos.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -19,8 +20,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf6f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#191410" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f6fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d1120" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -35,7 +36,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <AmbientBackground />
+          {children}
+        </ThemeProvider>
         <ServiceWorkerRegister />
       </body>
     </html>

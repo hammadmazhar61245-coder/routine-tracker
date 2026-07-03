@@ -109,11 +109,16 @@ export function TodayView({
 
       <motion.button
         onClick={onAddTask}
-        className="fixed bottom-24 right-5 z-30 h-15 w-15 rounded-full bg-accent text-accent-fg shadow-lg flex items-center justify-center"
+        className="fixed bottom-24 right-5 z-30 rounded-full bg-accent text-accent-fg flex items-center justify-center glow-ring"
         style={{ width: 60, height: 60 }}
         whileTap={{ scale: 0.9, rotate: 45 }}
       >
-        <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-30" />
+        <motion.span
+          className="absolute inset-0 rounded-full"
+          style={{ background: "hsl(var(--accent))" }}
+          animate={{ scale: [1, 1.5, 1], opacity: [0.35, 0, 0.35] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+        />
         <Plus className="h-7 w-7 relative z-10" />
       </motion.button>
     </div>

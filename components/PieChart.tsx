@@ -4,11 +4,11 @@ import { motion } from "motion/react";
 import { CATEGORY_LABELS } from "@/lib/utils";
 
 const COLORS: Record<string, string> = {
-  work: "hsl(258 60% 58%)",
-  study: "hsl(200 70% 50%)",
-  fitness: "hsl(152 45% 42%)",
-  personal: "hsl(340 65% 58%)",
-  other: "hsl(30 8% 50%)",
+  work: "hsl(243 75% 62%)",
+  study: "hsl(200 85% 52%)",
+  fitness: "hsl(160 60% 40%)",
+  personal: "hsl(320 65% 58%)",
+  other: "hsl(222 10% 52%)",
 };
 
 export function PieChart({
@@ -24,17 +24,28 @@ export function PieChart({
   const circumference = 2 * Math.PI * radius;
   const total = data.reduce((s, d) => s + d.count, 0) || 1;
 
-  let cumulative = 0;
+  // Compute each segment's dash/offset up front (no mutation during render).
+  const { segments } = data.reduce<{
+    segments: { category: string; dash: number; offset: number }[];
+    cumulative: number;
+  }>(
+    (acc, d) => {
+      const fraction = d.count / total;
+      const dash = fraction * circumference;
+      const offset = -acc.cumulative * circumference;
+      acc.segments.push({ category: d.category, dash, offset });
+      acc.cumulative += fraction;
+      return acc;
+    },
+    { segments: [], cumulative: 0 }
+  );
 
   return (
     <div className="flex items-center gap-6">
       <svg width={size} height={size} className="-rotate-90 shrink-0">
         <circle cx={cx} cy={cy} r={radius} fill="none" stroke="hsl(var(--border))" strokeWidth={stroke} opacity={0.3} />
         {data.map((d, i) => {
-          const fraction = d.count / total;
-          const dash = fraction * circumference;
-          const offset = -cumulative * circumference;
-          cumulative += fraction;
+          const seg = segments[i];
           return (
             <motion.circle
               key={d.category}
@@ -44,9 +55,9 @@ export function PieChart({
               fill="none"
               stroke={COLORS[d.category]}
               strokeWidth={stroke}
-              strokeDasharray={`${dash} ${circumference - dash}`}
+              strokeDasharray={`${seg.dash} ${circumference - seg.dash}`}
               initial={{ strokeDashoffset: circumference, opacity: 0 }}
-              animate={{ strokeDashoffset: offset, opacity: 1 }}
+              animate={{ strokeDashoffset: seg.offset, opacity: 1 }}
               transition={{ delay: i * 0.1, duration: 0.7, ease: "easeOut" }}
               strokeLinecap="butt"
             />
